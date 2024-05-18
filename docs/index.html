@@ -8,15 +8,16 @@
         choices = ['Rock', 'Paper', 'Scissors']
         let playerScore = 0;
         let computerScore = 0;
-        const humanSelection = getHumanChoice();
-        const computerSelection = getComputerChoice(choices);
+        let round = 0;
+        let roundWinner = String;
+        let gameWinner = String;
 
         function getComputerChoice(arr) {
             let rng = Math.floor(Math.random() * 3);
             return arr[rng];
         }
-
-        function getHumanChoice(getChoice) {
+        
+        let getHumanChoice = getChoice => {
             getChoice = parseInt(prompt('Your choice? 1 for Rock. 2 for Paper. 3 for Scissors '));
             let choose = (getChoice === 1) ? 'Rock' : (getChoice === 2) ? 'Paper' : (getChoice === 3) ? 'Scissors' : alert("Make a correct choice!");
             return choose;
@@ -25,33 +26,60 @@
         function playRound(humanChoice, computerChoice) {
             if (humanChoice != null || humanChoice != undefined) {
                 if (((computerChoice === 'Rock' && humanChoice === "Scissors")  || (computerChoice === 'Paper' && humanChoice === 'Rock') || (computerChoice === 'Scissors' && humanChoice === 'Paper')) && (humanChoice !== null || humanChoice !== undefined)) {
-                    console.log('You lost!');
+                    roundWinner = 'Computer is the winner of this round';
                     computerScore += 1;
+                    round += 1;
+                    alert(roundWinner);
                     
                 } else if (humanChoice === computerChoice) {
-                    console.log("Guess what, it's a draw!")
-
+                    roundWinner = 'This is a draw round';
+                    round += 1;
+                    alert(roundWinner);
                 } else {
-                    console.log("Player won!");
+                    roundWinner = 'You are the winner of this round'
                     playerScore += 1;
-        
+                    round += 1;
+                    alert(roundWinner);
                 }
             } else {
                 console.log('You need to make appropriate choice.');
             }
-            console.log(`You chose ${humanSelection}`);
-            console.log(`Computer chose ${computerSelection}`);
+            // --------some errorneous line------- //
+            //console.log(`Computer chose ${computerSelection}`);
+            //console.log(`You chose ${humanSelection}`);
+
             console.log(`Player score is ${playerScore}`);
             console.log(`Computer score is ${computerScore}`);
         }
 
-        function playGame(round) {
-           return round
+        function playGame(x) {
+            for (round = 0; round <= 4;) {
+            x = playRound(getHumanChoice(), getComputerChoice(choices));
+            };
+            if (round >= 5) {
+                if (playerScore < computerScore) {
+                    gameWinner = alert(`Computer is the winner \nScores \nPlayer: ${playerScore}  Computer: ${computerScore}`);
+                } else if (playerScore > computerScore) {
+                    gameWinner = alert(`You are the winner  \nScores \nPlayer: ${playerScore}  Computer: ${computerScore}`);
+                } else {
+                gameWinner = alert(`You are as smart as a computer  \nScores \nPlayer: ${playerScore}  Computer: ${computerScore}`);
+                }
+                again();
+            }
         }
-        const r = playRound(humanSelection, computerSelection);
-        playGame(r)
-
-
+        // --------more erroneous lines------//
+        //const humanSelection = getHumanChoice();
+        //const computerSelection = getComputerChoice(choices);
+        // const r = playRound(humanSelection, computerSelection);
+        playGame();
+        
+        function again(question, yes, no) {
+            if (confirm('Wanna play again') == true) {
+                playGame();
+            } else {
+                alert("No Problem, another time!")
+            }
+        }
     </script>
 </body>
 </html>
