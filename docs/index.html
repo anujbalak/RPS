@@ -8,8 +8,8 @@
         choices = ['Rock', 'Paper', 'Scissors']
         let playerScore = 0;
         let computerScore = 0;
-        let callPlayerScore = (`Player score is ${playerScore}`);
-        let callComputerScore = (`Computer score is ${computerScore}`);
+        const humanSelection = getHumanChoice();
+        const computerSelection = getComputerChoice(choices);
 
         function getComputerChoice(arr) {
             let rng = Math.floor(Math.random() * 3);
@@ -18,32 +18,40 @@
 
         function getHumanChoice(getChoice) {
             getChoice = parseInt(prompt('Your choice? 1 for Rock. 2 for Paper. 3 for Scissors '));
-            let choose = (getChoice === 1) ? 'Rock' : (getChoice === 2) ? 'Paper' : (getChoice === 3) ? 'Scissors' : alert("Make a correct choice!")
+            let choose = (getChoice === 1) ? 'Rock' : (getChoice === 2) ? 'Paper' : (getChoice === 3) ? 'Scissors' : alert("Make a correct choice!");
             return choose;
         }
         
         function playRound(humanChoice, computerChoice) {
-            if ((computerChoice === 'Rock' && humanChoice === "Scissors")  || (computerChoice === 'Paper' && humanChoice === 'Rock') || (computerChoice === 'Scissors' && humanChoice === 'Paper')) {
-                console.log('You lost!')
-                computerScore += 1;
-                
-            } else if (humanChoice === computerChoice) {
-                console.log("Guess what, it's a draw!")
+            if (humanChoice != null || humanChoice != undefined) {
+                if (((computerChoice === 'Rock' && humanChoice === "Scissors")  || (computerChoice === 'Paper' && humanChoice === 'Rock') || (computerChoice === 'Scissors' && humanChoice === 'Paper')) && (humanChoice !== null || humanChoice !== undefined)) {
+                    console.log('You lost!');
+                    computerScore += 1;
+                    
+                } else if (humanChoice === computerChoice) {
+                    console.log("Guess what, it's a draw!")
 
-            } else {
-                console.log("Player won!")
-                playerScore += 1;
-    
-            }
-        }
-        const humanSelection = getHumanChoice();
-        const computerSelection = getComputerChoice(choices);
+                } else {
+                    console.log("Player won!");
+                    playerScore += 1;
         
-        playRound(humanSelection, computerSelection)
-        console.log(`You chose ${humanSelection}`);
-        console.log(`Computer chose ${computerSelection}`);
-        console.log(callPlayerScore);
-        console.log(computerScore);
+                }
+            } else {
+                console.log('You need to make appropriate choice.');
+            }
+            console.log(`You chose ${humanSelection}`);
+            console.log(`Computer chose ${computerSelection}`);
+            console.log(`Player score is ${playerScore}`);
+            console.log(`Computer score is ${computerScore}`);
+        }
+
+        function playGame(round) {
+           return round
+        }
+        const r = playRound(humanSelection, computerSelection);
+        playGame(r)
+
+
     </script>
 </body>
 </html>
