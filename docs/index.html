@@ -2,84 +2,244 @@
 <html lang="eng">
 <head>
     <meta charset="UTF-8">
+    <title>RPS by Anuj</title>
+    <style>
+        body {
+            background-color: #212832;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            color: #eeeeee;
+            font-size: 22px;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            display: flex;
+            background-color: #32363f;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #eeeeee;
+            justify-content: center;
+            align-items: center;
+            font-size: 36px;
+            font-weight: 800;
+            padding: 30px;
+            border:solid 1px #586279;
+            border-radius: 0px 0px 20px 20px;
+        }
+        section {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .details {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 100px;
+            gap: 12%;
+        }
+        .playerDetails, .computerDetails {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            gap: 50px;
+        }
+        .playerTag, .computerTag {
+            background-color: #32363f;
+            padding: 20px;
+            font-size: 30px;
+            text-align: center;
+            border: solid 1px #586279;
+            border-radius: 20px;
+            /* box-shadow: 5px 5px 10px #bd880a; */
+        }
+
+        .args {
+            display: flex;
+            flex-direction: column;
+            gap: 50px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .choiceBox {
+            display: flex;
+            justify-content: center;
+            gap :15%;
+        }
+
+        button {
+            border: solid 1px #4cb6ba;
+            font-size: 30px;
+            padding: 10px 40px ;
+            border-radius: 10px;
+            color: #eeeeee;
+            background-color: #212832;
+        }
+    </style>
 </head>
 <body>
     <script>
-        choices = ['Rock', 'Paper', 'Scissors']
+        const body = document.querySelector('body');
+        const header = document.createElement('header');
+        const title = document.createElement('div');
+        const main = document.createElement('section');
+        const details = document.createElement('div');
+        details.className = 'details';
+        const playerDetails = document.createElement('div');
+        playerDetails.className = 'playerDetails';
+        const playerTag = document.createElement('div');
+        playerTag.className = 'playerTag';
+        let playerChoice = document.createElement('div');
+        let playerScoreDisplay = document.createElement('div');
+        const args = document.createElement('div');
+        args.className = 'args';
+        const arg = document.createElement('div');
+        let roundWinner = document.createElement('div');
+        const computerDetails = document.createElement('div');
+        computerDetails.className = 'computerDetails'; 
+        const computerTag = document.createElement('div');
+        computerTag.className = 'computerTag';
+        let computer_choice = document.createElement('div');
+        let computerScoreDisplay = document.createElement('div');
+        const choiceBox = document.createElement('div');
+        choiceBox.className = 'choiceBox';
+        const rock = document.createElement('button');
+        const paper = document.createElement('button');
+        const scissors = document.createElement('button');
+        const new_game = document.createElement('button');
+        playerTag.textContent = 'Player Score';
+        computerTag.textContent = 'Computer Score';
+        rock.textContent = 'Rock';
+        paper.textContent = 'Paper';
+        scissors.textContent = 'Scissors';
+        header.textContent = 'RPS by Anuj';
+        body.appendChild(header);
+        body.appendChild(main);
+        main.appendChild(details);
+        details.appendChild(playerDetails);
+        playerDetails.appendChild(playerTag);
+        playerDetails.appendChild(playerChoice);
+        details.appendChild(args);
+        args.appendChild(arg);
+        args.appendChild(roundWinner);
+        details.appendChild(computerDetails);
+        computerDetails.appendChild(computerTag);
+        computerDetails.appendChild(computer_choice);
+        computerDetails.append(computerScoreDisplay);
+        playerDetails.append(playerScoreDisplay);
+        main.appendChild(choiceBox);
+        choiceBox.appendChild(rock);
+        choiceBox.appendChild(paper);
+        let can_play = true;
+        choiceBox.appendChild(scissors);
+        const buttons = document.querySelectorAll('button');
         let playerScore = 0;
         let computerScore = 0;
-        let round = 0;
-        let roundWinner = String;
-        let gameWinner = String;
+
+        choices = ['Rock', 'Paper', 'Scissors']
 
         function getComputerChoice(arr) {
             let rng = Math.floor(Math.random() * 3);
+            computer_choice.textContent = `Computer chose ${arr[rng]}`;
             return arr[rng];
         }
         
-        let getHumanChoice = getChoice => {
-            getChoice = parseInt(prompt('Your choice? 1 for Rock. 2 for Paper. 3 for Scissors '));
-            let choose = (getChoice === 1) ? 'Rock' : (getChoice === 2) ? 'Paper' : (getChoice === 3) ? 'Scissors' : alert("Make a correct choice!");
-            return choose;
+        let getHumanChoice = currentChoice => {
+            if (can_play === true) {
+                rock.addEventListener('click', () => {
+                    playerChoice.textContent = 'You chose Rock!'; 
+                    currentChoice = 'Rock';
+                    playRound(currentChoice, );
+                    console.log('clicked rock');
+                });
+                paper.addEventListener('click', () => {
+                    playerChoice.textContent = 'You chose Paper!';
+                    currentChoice = 'Paper';
+                    playRound(currentChoice, );
+                    console.log('clicked paper');
+                });
+                scissors.addEventListener('click', () => {
+                    playerChoice.textContent = 'You chose Scissors!';
+                    currentChoice = 'Scissors';
+                    playRound(currentChoice, );
+                    console.log('clicked rock');
+                });
+                return currentChoice;
+            } else { return; }
         }
-        
+
         function playRound(humanChoice, computerChoice) {
-            if (humanChoice != null || humanChoice != undefined) {
-                if (((computerChoice === 'Rock' && humanChoice === "Scissors")  || (computerChoice === 'Paper' && humanChoice === 'Rock') || (computerChoice === 'Scissors' && humanChoice === 'Paper')) && (humanChoice !== null || humanChoice !== undefined)) {
-                    roundWinner = 'Computer is the winner of this round';
-                    computerScore += 1;
-                    round += 1;
-                    alert(roundWinner);
+            computerChoice = getComputerChoice(choices);
+            if ((computerChoice === 'Rock' && humanChoice === "Scissors")  || (computerChoice === 'Paper' && humanChoice === 'Rock') || (computerChoice === 'Scissors' && humanChoice === 'Paper')) {
+                roundWinner.textContent = 'Computer is the winner of this round';
+                computerScore++;
                     
-                } else if (humanChoice === computerChoice) {
-                    roundWinner = 'This is a draw round';
-                    round += 1;
-                    alert(roundWinner);
-                } else {
-                    roundWinner = 'You are the winner of this round'
-                    playerScore += 1;
-                    round += 1;
-                    alert(roundWinner);
-                }
+            } else if (humanChoice === computerChoice) {
+                roundWinner.textContent = 'This is a draw round';
             } else {
-                console.log('You need to make appropriate choice.');
+                roundWinner.textContent = 'You are the winner of this round'
+                playerScore++;
+                return playerScore;
             }
-            // --------some errorneous line------- //
-            //console.log(`Computer chose ${computerSelection}`);
-            //console.log(`You chose ${humanSelection}`);
-
-            console.log(`Player score is ${playerScore}`);
-            console.log(`Computer score is ${computerScore}`);
+            if (playerChoice === 'Rock' && computerChoice === 'Scissors' || humanChoice === 'Scissors' && computerChoice === 'Rock') {
+                arg.textContent = 'Rock beats scissors!';
+            }  else if (playerChoice === 'Rock' && computerChoice === 'Paper' || playerChoice === 'Paper' && computerChoice === 'Rock') {
+                arg.textContent = 'Paper beats rock!';
+            } else if (playerChoice === 'Paper' && playerChoice === 'Scissors' || playerChoice === 'Scissors' && computerChoice === 'paper') {
+                arg.textContent = 'Scissors beats paper!';
+            } else {
+                arg.textContent = 'You have no enemy!';
+            }
         }
-
         function playGame(x) {
-            for (round = 0; round <= 4;) {
-            x = playRound(getHumanChoice(), getComputerChoice(choices));
-            };
-            if (round >= 5) {
+            if ((playerScore >= 5 || computerScore >= 5) && can_play === true) {
+                can_play = false;
+                let gameWinner = roundWinner;
                 if (playerScore < computerScore) {
-                    gameWinner = alert(`Computer is the winner \nScores \nPlayer: ${playerScore}  Computer: ${computerScore}`);
+                    gameWinner.textContent = 'Computer win this game.';
                 } else if (playerScore > computerScore) {
-                    gameWinner = alert(`You are the winner  \nScores \nPlayer: ${playerScore}  Computer: ${computerScore}`);
+                    gameWinner.textContent = 'You win this game.';
                 } else {
-                gameWinner = alert(`You are as smart as a computer  \nScores \nPlayer: ${playerScore}  Computer: ${computerScore}`);
+                    gameWinner.textContent = 'We got a tie';
                 }
                 again();
-            }
+            } else{getHumanChoice(); }
         }
-        // --------more erroneous lines------//
-        //const humanSelection = getHumanChoice();
-        //const computerSelection = getComputerChoice(choices);
-        // const r = playRound(humanSelection, computerSelection);
         playGame();
-        
-        function again(question, yes, no) {
-            if (confirm('Wanna play again') == true) {
-                playGame();
-            } else {
-                alert("No Problem, another time!")
-            }
+        function again() {
+            new_game.textContent = 'Play Again';
+            args.appendChild(new_game);
+            new_game.addEventListener('mouseover', (event) => {
+            event.target.style.backgroundColor = '#4cb6ba';
+            event.target.style.boxShadow = '0px 0px 15px #4cb6ba';
+            })
+            new_game .addEventListener('mouseout', (event) => {
+            event.target.style.backgroundColor = '#212832';
+            event.target.style.boxShadow = '';
+            })
+            new_game.addEventListener('click', () => {
+                console.log('button detected');
+                playerScore = 0;
+                computerScore = 0;
+                can_play = true;
+            })
         }
+        
+        playerScoreDisplay.textContent = playerScore;
+        computerScoreDisplay.textContent = computerScore;
+        console.log(computerScore);
+
+        buttons.forEach((btn) => {
+            btn.addEventListener('mouseover', (event) => {
+            event.target.style.backgroundColor = '#4cb6ba';
+            event.target.style.boxShadow = '0px 0px 15px #4cb6ba';
+        })
+            btn.addEventListener('mouseout', (event) => {
+            event.target.style.backgroundColor = '#212832';
+            event.target.style.boxShadow = '';
+
+        }) 
+        });
     </script>
 </body>
 </html>
