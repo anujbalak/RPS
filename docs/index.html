@@ -133,7 +133,7 @@
         let can_play = true;
         choiceBox.appendChild(scissors);
         const buttons = document.querySelectorAll('button');
-        let playerScore = 0;
+        let playerScore = 5;
         let computerScore = 0;
 
         choices = ['Rock', 'Paper', 'Scissors']
@@ -227,7 +227,6 @@
         
         playerScoreDisplay.textContent = playerScore;
         computerScoreDisplay.textContent = computerScore;
-        console.log(computerScore);
 
         buttons.forEach((btn) => {
             btn.addEventListener('mouseover', (event) => {
