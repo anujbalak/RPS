@@ -1,5 +1,4 @@
-# (RPS)
-(Play Now)[https://anujbalak.github.io/RPS/]
+# [RPS](https://anujbalak.github.io/RPS/)
 Rock Paper Scissors in JavaScript
 It is a just simple demo of popular game which played by 2 players so in this game one of player choose from availble three choice _(gnerally 'Rock', 'Paper', 'Scissors')_ and another player will choose from the same choices and the winner decided by follow conditions.
 - **Rocks beats Scissors**, so the player which chose rock, will be winner.
