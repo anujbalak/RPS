@@ -9,21 +9,29 @@
             font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
             color: #eeeeee;
             font-size: 22px;
+            display: flex;
+            height: 100vh;
+            flex-direction: column;
+            justify-content: space-between;
             margin: 0;
             padding: 0;
         }
+
         header {
             display: flex;
             background-color: #32363f;
-            font-family: Arial, Helvetica, sans-serif;
-            color: #eeeeee;
             justify-content: center;
             align-items: center;
-            font-size: 36px;
-            font-weight: 800;
             padding: 30px;
             border:solid 1px #586279;
             border-radius: 0px 0px 20px 20px;
+
+        }
+        .title {
+            font-family: Arial, Helvetica, sans-serif;
+            color: #eeeeee;
+            font-size: 36px;
+            font-weight: 800;
         }
         section {
             display: flex;
@@ -53,6 +61,20 @@
             /* box-shadow: 5px 5px 10px #bd880a; */
         }
 
+        .playerScore {
+            color: #61a494;
+            font-size: 30px;
+            font-family: monospace;
+            font-weight: 800;
+        }
+
+        .computerScore {
+            color: #a74242;
+            font-size: 30px;
+            font-family: monospace;
+            font-weight: 800;
+        }
+
         .args {
             display: flex;
             flex-direction: column;
@@ -65,6 +87,14 @@
             display: flex;
             justify-content: center;
             gap :15%;
+            flex-wrap: wrap;
+        }
+
+        .win_crit {
+            padding: 20px;
+            display: flex;
+            background-color: #1d2227;
+            justify-content: center;
         }
 
         button {
@@ -82,6 +112,7 @@
         const body = document.querySelector('body');
         const header = document.createElement('header');
         const title = document.createElement('div');
+        title.className = 'title';
         const main = document.createElement('section');
         const details = document.createElement('div');
         details.className = 'details';
@@ -90,7 +121,8 @@
         const playerTag = document.createElement('div');
         playerTag.className = 'playerTag';
         let playerChoice = document.createElement('div');
-        let playerScoreDisplay = document.createElement('div');
+        let playerScoreOutput = document.createElement('div');
+        playerScoreOutput.className = 'playerScore';
         const args = document.createElement('div');
         args.className = 'args';
         const arg = document.createElement('div');
@@ -100,20 +132,27 @@
         const computerTag = document.createElement('div');
         computerTag.className = 'computerTag';
         let computer_choice = document.createElement('div');
-        let computerScoreDisplay = document.createElement('div');
+        let computerScoreOutput = document.createElement('div');
+        computerScoreOutput.className = 'computerScore';
         const choiceBox = document.createElement('div');
         choiceBox.className = 'choiceBox';
         const rock = document.createElement('button');
         const paper = document.createElement('button');
         const scissors = document.createElement('button');
         const new_game = document.createElement('button');
+        const win_crit = document.createElement('footer');
+        win_crit.className = 'win_crit';
+        win_crit.textContent = 'First 5 to win.'
         playerTag.textContent = 'Player Score';
         computerTag.textContent = 'Computer Score';
         rock.textContent = 'Rock';
         paper.textContent = 'Paper';
         scissors.textContent = 'Scissors';
-        header.textContent = 'RPS by Anuj';
+        title.textContent = 'RPS by Anuj';
+        playerScoreOutput.textContent = 0;
+        computerScoreOutput.textContent = 0;
         body.appendChild(header);
+        header.appendChild(title);
         body.appendChild(main);
         main.appendChild(details);
         details.appendChild(playerDetails);
@@ -125,15 +164,16 @@
         details.appendChild(computerDetails);
         computerDetails.appendChild(computerTag);
         computerDetails.appendChild(computer_choice);
-        computerDetails.append(computerScoreDisplay);
-        playerDetails.append(playerScoreDisplay);
+        computerDetails.append(computerScoreOutput);
+        playerDetails.append(playerScoreOutput);
         main.appendChild(choiceBox);
         choiceBox.appendChild(rock);
         choiceBox.appendChild(paper);
+        body.appendChild(win_crit);
         let can_play = true;
         choiceBox.appendChild(scissors);
         const buttons = document.querySelectorAll('button');
-        let playerScore = 5;
+        let playerScore = 0;
         let computerScore = 0;
 
         choices = ['Rock', 'Paper', 'Scissors']
@@ -145,54 +185,58 @@
         }
         
         let getHumanChoice = currentChoice => {
-            if (can_play === true) {
-                rock.addEventListener('click', () => {
-                    playerChoice.textContent = 'You chose Rock!'; 
-                    currentChoice = 'Rock';
-                    playRound(currentChoice, );
-                    console.log('clicked rock');
-                });
-                paper.addEventListener('click', () => {
-                    playerChoice.textContent = 'You chose Paper!';
-                    currentChoice = 'Paper';
-                    playRound(currentChoice, );
-                    console.log('clicked paper');
-                });
-                scissors.addEventListener('click', () => {
-                    playerChoice.textContent = 'You chose Scissors!';
-                    currentChoice = 'Scissors';
-                    playRound(currentChoice, );
-                    console.log('clicked rock');
-                });
-                return currentChoice;
-            } else { return; }
+            rock.addEventListener('click', () => {
+                playerChoice.textContent = 'You chose Rock!'; 
+                currentChoice = 'Rock';
+                playGame(currentChoice, );
+            });
+            paper.addEventListener('click', () => {
+                playerChoice.textContent = 'You chose Paper!';
+                currentChoice = 'Paper';
+                playGame(currentChoice, );
+            });
+            scissors.addEventListener('click', () => {
+                playerChoice.textContent = 'You chose Scissors!';
+                currentChoice = 'Scissors';
+                playGame(currentChoice, );
+            });
         }
-
         function playRound(humanChoice, computerChoice) {
-            computerChoice = getComputerChoice(choices);
             if ((computerChoice === 'Rock' && humanChoice === "Scissors")  || (computerChoice === 'Paper' && humanChoice === 'Rock') || (computerChoice === 'Scissors' && humanChoice === 'Paper')) {
                 roundWinner.textContent = 'Computer is the winner of this round';
                 computerScore++;
-                    
+                computerScoreOutput.textContent = computerScore;
+                return computerScore;
             } else if (humanChoice === computerChoice) {
                 roundWinner.textContent = 'This is a draw round';
             } else {
                 roundWinner.textContent = 'You are the winner of this round'
                 playerScore++;
+                playerScoreOutput.textContent = playerScore;
                 return playerScore;
             }
-            if (playerChoice === 'Rock' && computerChoice === 'Scissors' || humanChoice === 'Scissors' && computerChoice === 'Rock') {
+        }
+
+        function reason(computerChoice, playerChoice) {
+            if (playerChoice === 'Rock' && computerChoice === 'Scissors' || playerChoice === 'Scissors' && computerChoice === 'Rock') {
                 arg.textContent = 'Rock beats scissors!';
             }  else if (playerChoice === 'Rock' && computerChoice === 'Paper' || playerChoice === 'Paper' && computerChoice === 'Rock') {
                 arg.textContent = 'Paper beats rock!';
-            } else if (playerChoice === 'Paper' && playerChoice === 'Scissors' || playerChoice === 'Scissors' && computerChoice === 'paper') {
+            } else if (playerChoice === 'Paper' && computerChoice === 'Scissors' || playerChoice === 'Scissors' && computerChoice === 'paper') {
                 arg.textContent = 'Scissors beats paper!';
             } else {
                 arg.textContent = 'You have no enemy!';
             }
+
         }
-        function playGame(x) {
+        function playGame(playerChoice, computerChoice) {
+            computerChoice = getComputerChoice(choices);
+            playRound(playerChoice, computerChoice);
+            reason(computerChoice, playerChoice);
             if ((playerScore >= 5 || computerScore >= 5) && can_play === true) {
+                rock.disabled = true;
+                paper.disabled = true;
+                scissors.disabled = true;
                 can_play = false;
                 let gameWinner = roundWinner;
                 if (playerScore < computerScore) {
@@ -200,12 +244,13 @@
                 } else if (playerScore > computerScore) {
                     gameWinner.textContent = 'You win this game.';
                 } else {
-                    gameWinner.textContent = 'We got a tie';
+                    gameWinner.textContent = 'We got a tie!';
                 }
                 again();
-            } else{getHumanChoice(); }
+            }
         }
-        playGame();
+        getHumanChoice();
+
         function again() {
             new_game.textContent = 'Play Again';
             args.appendChild(new_game);
@@ -218,27 +263,35 @@
             event.target.style.boxShadow = '';
             })
             new_game.addEventListener('click', () => {
-                console.log('button detected');
                 playerScore = 0;
                 computerScore = 0;
+                playerScoreOutput.textContent = playerScore;
+                computerScoreOutput.textContent = computerScore;
                 can_play = true;
+                new_game.remove();
+                arg.textContent = '';
+                roundWinner.textContent = '';
+                rock.disabled = false;
+                paper.disabled = false;
+                scissors.disabled = false;
             })
         }
-        
-        playerScoreDisplay.textContent = playerScore;
-        computerScoreDisplay.textContent = computerScore;
 
         buttons.forEach((btn) => {
             btn.addEventListener('mouseover', (event) => {
             event.target.style.backgroundColor = '#4cb6ba';
             event.target.style.boxShadow = '0px 0px 15px #4cb6ba';
-        })
+            });
             btn.addEventListener('mouseout', (event) => {
             event.target.style.backgroundColor = '#212832';
             event.target.style.boxShadow = '';
 
         }) 
         });
+
+        title.addEventListener('click', () => {
+            alert('wanna refresh?');
+        })
     </script>
 </body>
 </html>
